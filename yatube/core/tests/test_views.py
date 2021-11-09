@@ -17,4 +17,4 @@ class CoreViewsTests(TestCase):
     def test_error_page(self):
         request = self.client.get(self.pages_attribs['404']['page_url'])
         self.assertEqual(request.status_code, HTTPStatus.NOT_FOUND)
-        self.assertEqual(request, self.pages_attribs['404']['template'])
+        self.assertTemplateUsed(request, self.pages_attribs['404']['template'])
