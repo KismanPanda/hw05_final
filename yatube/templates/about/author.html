@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Об авторе проекта{% endblock title %}
+{% block content %}
+  <div class="container py-5">
+    <h1>Об авторе проекта</h1>
+    <p>
+      Привет! Я - Екатерина Кузнецова.
+      
+      Получаю профессию Python-разработчика на Яндекс.Практикум.  
+      В прошлом работала метеорологом и финансовым аналитиком.
+      В обеих сферах требовалось работать с базами данных и немного программировать.
+      С первого для в Гидрометцентре полюбила чёрный экран с белыми буквами и снег с дождём.
+      
+      Мой аккаунт на GitHub можно найти <a href='https://github.com/Sapuntsova'>здесь</a>.
+      
+      О повседневной жизни пишу в 
+      <a href='https://www.facebook.com/EkaterinaKismanKuznetsova/'>Facebook </a>
+      и 
+      <a href='https://www.instagram.com/happy_kisman/'>Instagram</a>.
+    </p>
+    <p>
+      Особо Вас приветствует пёс Мэллон, без которого жизнь была бы скучнее, а эта страница была бы написана гораздо раньше:
+      <img src="{% static 'img/mellon_under_table.jpg' %}" width="300" height="300">
+      <i>P.S. Мэллон - по-эльфийски "друг"</i>
+    </p>
+  </div>
+{% endblock content %}
