@@ -2,7 +2,7 @@ from http import HTTPStatus
 
 from django.test import TestCase, Client
 
-from .constants import CORE_PAGES_TEST_ATTRIBUTES
+from core.tests.constants import CORE_PAGES_TEST_ATTRIBUTES
 
 
 class CoreViewsTests(TestCase):

@@ -4,8 +4,8 @@ from http import HTTPStatus
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
-from ..models import Comment, Group, Post, User
-from .constants import (
+from posts.models import Comment, Group, Post, User
+from posts.tests.constants import (
     POSTS_PAGES_TEST_ATTRIBUTES,
     TEST_AUTHOR,
     TEST_GROUP,

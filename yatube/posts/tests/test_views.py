@@ -6,8 +6,8 @@ from django.core.cache import cache
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
-from ..models import User, Group, Post, Comment, Follow
-from .constants import (
+from posts.models import User, Group, Post, Comment, Follow
+from posts.tests.constants import (
     POSTS_PAGES_TEST_ATTRIBUTES,
     TEST_AUTHOR,
     TEST_POST,
