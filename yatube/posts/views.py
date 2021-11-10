@@ -78,9 +78,7 @@ def index(request):
 def follow_index(request):
     """Posts list of authors the user is following."""
     template = 'posts/follow.html'
-    user_subscriptions = Follow.objects.filter(user=request.user)
-    author_list = User.objects.filter(following__in=user_subscriptions)
-    post_list = Post.objects.filter(author__in=author_list)
+    post_list = Post.objects.filter(author__following__user=request.user)
     paginator = Paginator(post_list, NUM_POSTS_ON_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
