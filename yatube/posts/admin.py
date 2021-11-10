@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Group, Post, Follow
+from .models import Comment, Group, Post, Follow
 from yatube.settings import EMPTY_VALUE
 
 
@@ -24,6 +24,23 @@ class GroupAdmin(admin.ModelAdmin):
     pass
 
 
+@admin.register(Comment)
+class CommentAdmin(admin.ModelAdmin):
+    list_display = (
+        'pk',
+        'post',
+        'author',
+        'text'
+    )
+    search_fields = ('text',)
+    list_filter = ('created', 'author',)
+    empty_value_display = EMPTY_VALUE
+
+
 @admin.register(Follow)
 class FollowAdmin(admin.ModelAdmin):
-    pass
+    list_display = (
+        'user',
+        'author'
+    )
+    list_filter = ('user', 'author')

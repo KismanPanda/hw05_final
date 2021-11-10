@@ -80,7 +80,7 @@ class Comment(models.Model):
         verbose_name_plural = 'Комментарии'
 
     def __str__(self) -> str:
-        return (self.text[:15])
+        return (f'Комментарий {self.author.username} к посту {self.post.id}')
 
 
 class Follow(models.Model):
@@ -102,4 +102,5 @@ class Follow(models.Model):
         verbose_name_plural = 'Подписки'
 
     def __str__(self) -> str:
-        return (self.user.username + '-' + self.author.username)
+        return (f'Подписка {self.user.username}'
+                f' на автора {self.author.username}')

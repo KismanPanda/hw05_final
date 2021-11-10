@@ -251,20 +251,19 @@ class PostViewsTests(TestCase):
         response = self.author_client.get(
             self.pages_attribs['post_detail']['reversed_name']
         )
+        post = response.context.get('post')
         self.assertEqual(
-            response.context.get('post').id,
+            post.id,
             self.post_4_id,
             'Страница post_detail показывает неверный пост.'
         )
         self.assertEqual(
-            response.context.get('post').image,
+            post.image,
             self.image_folder + TEST_UPLOADED.name,
             'Страница post_detail показывает неверную картинкку.'
         )
-        first_comment = response.context.get('comments')[0]
-        self.assertEqual(
-            first_comment.text,
-            TEST_COMMENT['text'],
+        self.assertTrue(
+            TEST_COMMENT['text'] in response.content.decode("utf-8"),
             'Страница post_detail показывает неверный комментарий.'
         )
 
@@ -279,13 +278,7 @@ class PostViewsTests(TestCase):
             data=data_form,
             follow=True
         )
-        new_comment = Comment.objects.get(
-            post=self.post_4,
-            text=new_comment_text,
-            author=self.user_author_2
-        )
-        comments_on_page = response.context.get('comments')
-        self.assertTrue(new_comment in comments_on_page)
+        self.assertTrue(new_comment_text in response.content.decode("utf-8"))
 
 
 class FollowTests(TestCase):

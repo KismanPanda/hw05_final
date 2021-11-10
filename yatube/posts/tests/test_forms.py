@@ -1,6 +1,7 @@
 import shutil
 from http import HTTPStatus
 
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 
@@ -53,19 +54,20 @@ class PostCreateFormTests(TestCase):
             'image': TEST_UPLOADED
         }
         response = self.author_client.post(
-            self.pages_attribs['create_post']['reversed_name'],
+            PostCreateFormTests.pages_attribs['create_post']['reversed_name'],
             data=form_data,
             follow=True
         )
         self.assertEqual(Post.objects.count(), posts_count + 1)
         self.assertRedirects(
-            response, self.pages_attribs['profile']['reversed_name']
+            response,
+            PostCreateFormTests.pages_attribs['profile']['reversed_name']
         )
         self.assertTrue(
             Post.objects.filter(
                 text=TEST_POST['text'],
-                group=self.group,
-                image=self.image_folder + TEST_UPLOADED.name
+                group=PostCreateFormTests.group,
+                image=PostCreateFormTests.image_folder + TEST_UPLOADED.name
             ).exists()
         )
 
@@ -77,7 +79,7 @@ class PostCreateFormTests(TestCase):
             'group': ''
         }
         response = self.author_client.post(
-            self.pages_attribs['create_post']['reversed_name'],
+            PostCreateFormTests.pages_attribs['create_post']['reversed_name'],
             data=form_data,
             follow=True
         )
@@ -89,6 +91,24 @@ class PostCreateFormTests(TestCase):
             'Обязательное поле.'
         )
         self.assertEqual(response.status_code, HTTPStatus.OK)
+
+    def test_cant_create_post_with_strange_file(self):
+        not_image = b'123'
+        not_image_uploaded = SimpleUploadedFile(
+            name='small.gif',
+            content=not_image,
+            content_type='image/gif'
+        )
+        posts_count = Post.objects.count()
+        form_data = {
+            'text': 'Пост с плохой картинкой',
+            'image': not_image_uploaded
+        }
+        self.author_client.post(
+            PostCreateFormTests.pages_attribs['create_post']['reversed_name'],
+            data=form_data,
+        )
+        self.assertEqual(Post.objects.count(), posts_count)
 
 
 class PostEditFormTests(TestCase):
@@ -129,7 +149,7 @@ class PostEditFormTests(TestCase):
 
     def setUp(self):
         self.author_client = Client()
-        self.author_client.force_login(self.user_author)
+        self.author_client.force_login(PostEditFormTests.user_author)
 
     def test_edit_post(self):
         """
@@ -143,15 +163,22 @@ class PostEditFormTests(TestCase):
             'group': ''
         }
         response = self.author_client.post(
-            self.pages_attribs['post_edit']['reversed_name'],
+            PostEditFormTests.pages_attribs['post_edit']['reversed_name'],
             data=form_data,
             follow=True
         )
         self.assertEqual(Post.objects.count(), posts_count)
-        self.assertEqual(Post.objects.get(id=self.post_1_id).text, new_text)
-        self.assertEqual(Post.objects.get(id=self.post_1_id).group, None)
+        self.assertEqual(
+            Post.objects.get(id=PostEditFormTests.post_1_id).text,
+            new_text
+        )
+        self.assertEqual(
+            Post.objects.get(id=PostEditFormTests.post_1_id).group,
+            None
+        )
         self.assertRedirects(
-            response, self.pages_attribs['post_detail']['reversed_name']
+            response,
+            PostEditFormTests.pages_attribs['post_detail']['reversed_name']
         )
 
 
@@ -192,7 +219,7 @@ class CommentFormTests(TestCase):
 
     def setUp(self):
         self.author_client = Client()
-        self.author_client.force_login(self.user_author)
+        self.author_client.force_login(CommentFormTests.user_author)
 
     def test_add_comment(self):
         """New comment is saved in DB. User is redirected to post_detail."""
@@ -200,21 +227,22 @@ class CommentFormTests(TestCase):
         new_comment_text = 'Ещё один комментарий.'
         data_form = {
             'text': new_comment_text,
-            'post': self.post_1
+            'post': CommentFormTests.post_1
         }
         response = self.author_client.post(
-            self.pages_attribs['add_comment']['reversed_name'],
+            CommentFormTests.pages_attribs['add_comment']['reversed_name'],
             data=data_form,
             follow=True
         )
         self.assertEqual(Comment.objects.count(), comments_count + 1)
         self.assertRedirects(
-            response, self.pages_attribs['post_detail']['reversed_name']
+            response,
+            CommentFormTests.pages_attribs['post_detail']['reversed_name']
         )
         self.assertTrue(
             Comment.objects.filter(
                 text=new_comment_text,
-                post=self.post_1,
-                author=self.user_author
+                post=CommentFormTests.post_1,
+                author=CommentFormTests.user_author
             ).exists()
         )

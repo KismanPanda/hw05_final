@@ -22,19 +22,14 @@ def create_post(request):
         files=request.FILES or None,
         instance=post
     )
-
     if form.is_valid():
-        text = form.cleaned_data['text']
-        group = form.cleaned_data['group']
-        image = form.cleaned_data['image']
         username = request.user.username
         author = User.objects.get(username=username)
-        new_post = Post(text=text, group=group, author=author, image=image)
-        new_post.save()
+        form.instance.author = author
+        form.save()
         return redirect(
             reverse('posts:profile', args=[username])
         )
-
     return render(request, template, {'form': form})
 
 
@@ -52,8 +47,6 @@ def post_edit(request, post_id):
         files=request.FILES or None,
         instance=post
     )
-    # И правда, так можно. Оказывается, при GET-запросе не-пустая форма
-    # передаётся за счёт последней строки: instance=post. Чудо-чудное!
 
     if form.is_valid():
         form.save()
@@ -174,15 +167,11 @@ def post_detail(request, post_id):
     """Post details."""
     template = 'posts/post_detail.html'
     post = get_object_or_404(Post, pk=post_id)
-    comments = post.comments.all()
     comment_form = CommentForm()
     title = 'Пост ' + post.__str__()
-    author_posts_count = post.author.posts.count()
     context = {
         'title': title,
-        'author_posts_count': author_posts_count,
         'post': post,
-        'comments': comments,
         'form': comment_form
     }
     return render(request, template, context)

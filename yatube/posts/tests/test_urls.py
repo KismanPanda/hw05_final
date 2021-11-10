@@ -83,12 +83,12 @@ class PostURLTests(TestCase):
 
     def test_pages_urls_exist_at_desired_location(self):
         """User can access pages according to his permissions."""
-        for user_type, user_attributes in self.users_access_rights.items():
+        for user_type, user_attributes in (self.users_access_rights.items()):
             with self.subTest(user_type=user_type):
                 for page_name in user_attributes['page_list']:
                     with self.subTest(page_name=page_name):
                         response = user_attributes['client'].get(
-                            self.pages_attribs[page_name]['page_url']
+                            PostURLTests.pages_attribs[page_name]['page_url']
                         )
                         self.assertEqual(response.status_code, HTTPStatus.OK)
 
@@ -117,7 +117,7 @@ class PostURLTests(TestCase):
         ]
         for page_name in page_list:
             with self.subTest(page_name=page_name):
-                page_url = self.pages_attribs[page_name]['page_url']
+                page_url = PostURLTests.pages_attribs[page_name]['page_url']
                 redirect_url = f'{LOGIN_PAGE_URL}?next={page_url}'
                 response = self.guest_client.get(page_url, follow=True)
                 self.assertRedirects(response, (redirect_url))
@@ -125,14 +125,14 @@ class PostURLTests(TestCase):
     def test_post_edit_url_redirects_authorized_not_author(self):
         """Post_edit page redirects not-author authorized
         user to Post_detail page."""
-        post_edit_url = self.pages_attribs['post_edit']['page_url']
-        redirect_url = self.pages_attribs['post_detail']['page_url']
+        post_edit_url = PostURLTests.pages_attribs['post_edit']['page_url']
+        redirect_url = PostURLTests.pages_attribs['post_detail']['page_url']
         response = self.authorized_client.get(post_edit_url, follow=True)
         self.assertRedirects(response, (redirect_url))
 
     def test_post_urls_use_correct_templates(self):
         """Urls of posts app use correct templates."""
-        for page_name, page_attributes in self.pages_attribs.items():
+        for page_name, page_attributes in PostURLTests.pages_attribs.items():
             with self.subTest(page_name=page_name):
                 response = self.author_client.get(page_attributes['page_url'])
                 template = page_attributes.get('template')
