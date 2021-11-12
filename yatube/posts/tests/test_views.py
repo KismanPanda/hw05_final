@@ -376,7 +376,7 @@ class PaginatorTests(TestCase):
         for i in range(1, cls.post_num + 1):
             post = Post(
                 author=cls.user_author,
-                text=(TEST_POST['text'] + str(i)),
+                text=(TEST_POST['text'] + ' ' + str(i)),
                 group=cls.group_1
             )
             posts_list.append(post)

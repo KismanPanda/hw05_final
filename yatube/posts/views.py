@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+# from django.core.cache import cache
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
@@ -64,6 +65,10 @@ def index(request):
     """Main page."""
     template = 'posts/index.html'
     post_list = Post.objects.all()
+    # post_list = cache.get('index_page')
+    # if post_list is None:
+    #     post_list = Post.objects.all()
+    #     cache.set('index_page', post_list, timeout=20)
     paginator = Paginator(post_list, NUM_POSTS_ON_PAGE)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
