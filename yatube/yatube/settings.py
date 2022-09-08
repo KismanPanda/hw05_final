@@ -4,9 +4,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 SECRET_KEY = 'kqdt=i3_7$3y0@&e*=r8v_joxho+tlfs&@g&g!y***gv))8b3c'
 
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'testserver']
+ALLOWED_HOSTS = ['127.0.0.1', '51.250.103.248', 'localhost', 'testserver']
 
 
 INSTALLED_APPS = [
@@ -94,6 +94,7 @@ USE_TZ = True
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 
 EMPTY_VALUE = '-пусто-'
