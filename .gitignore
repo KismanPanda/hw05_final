@@ -146,7 +146,7 @@ dmypy.json
 .mypy_cache
 
 # Static
-yatube/static/
+# yatube/static/
 yatube/templates/css/
 yatube/.coverage
 yatube/htmlcov/
