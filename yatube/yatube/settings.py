@@ -6,7 +6,7 @@ SECRET_KEY = 'kqdt=i3_7$3y0@&e*=r8v_joxho+tlfs&@g&g!y***gv))8b3c'
 
 DEBUG = False
 
-ALLOWED_HOSTS = ['127.0.0.1', '51.250.103.248', 'localhost', 'testserver']
+ALLOWED_HOSTS = ['127.0.0.1', '51.250.103.248', 'localhost', 'kisman.hopto.org']
 
 
 INSTALLED_APPS = [
@@ -91,7 +91,7 @@ USE_L10N = True
 USE_TZ = True
 
 
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
